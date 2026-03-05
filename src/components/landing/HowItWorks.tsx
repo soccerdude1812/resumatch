@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ClipboardPaste, FileSearch, Zap } from "lucide-react";
 
 const steps = [
@@ -27,25 +26,6 @@ const steps = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 },
-  },
-};
-
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24 sm:py-32 relative">
@@ -56,37 +36,24 @@ export default function HowItWorks() {
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-20"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+        <div className="text-center mb-20">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
             Three steps. <span className="text-gradient">Thirty seconds.</span>
           </h2>
           <p className="text-text-secondary text-lg max-w-lg mx-auto">
             No signup, no file uploads, no complexity. Just paste and go.
           </p>
-        </motion.div>
+        </div>
 
         {/* Steps */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="relative"
-        >
+        <div className="relative">
           {/* Connector line (desktop only) */}
           <div className="hidden md:block absolute top-16 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-[var(--glass-border)] to-transparent" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
             {steps.map((step) => (
-              <motion.div
+              <div
                 key={step.step}
-                variants={itemVariants}
                 className="relative flex flex-col items-center text-center"
               >
                 {/* Step number + icon */}
@@ -101,16 +68,16 @@ export default function HowItWorks() {
                   </div>
                 </div>
 
-                <h3 className="text-lg font-semibold mb-2 text-text-primary">
+                <h3 className="text-lg font-semibold mb-2 text-white">
                   {step.title}
                 </h3>
                 <p className="text-sm text-text-secondary leading-relaxed max-w-xs">
                   {step.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

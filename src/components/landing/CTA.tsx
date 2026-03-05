@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Check, Infinity, Lock } from "lucide-react";
+import { ArrowRight, Check, Lock } from "lucide-react";
 import GlassCard from "@/components/shared/GlassCard";
 
 const plans = [
@@ -47,32 +46,20 @@ export default function CTA() {
     <section className="py-24 sm:py-32 relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
             Simple pricing.{" "}
             <span className="text-gradient">No surprises.</span>
           </h2>
           <p className="text-text-secondary text-lg max-w-lg mx-auto">
             Start free and upgrade when you need more. No credit card required.
           </p>
-        </motion.div>
+        </div>
 
         {/* Pricing cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-            >
+          {plans.map((plan) => (
+            <div key={plan.name}>
               <GlassCard
                 hover={plan.active}
                 className={`h-full relative ${
@@ -93,11 +80,11 @@ export default function CTA() {
 
                 {/* Plan header */}
                 <div className="mb-6">
-                  <h3 className="text-lg font-semibold text-text-primary mb-1">
+                  <h3 className="text-lg font-semibold text-white mb-1">
                     {plan.name}
                   </h3>
                   <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-4xl font-bold text-text-primary">
+                    <span className="text-4xl font-bold text-white">
                       {plan.price}
                     </span>
                     <span className="text-sm text-text-tertiary">
@@ -155,7 +142,7 @@ export default function CTA() {
                   </button>
                 )}
               </GlassCard>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

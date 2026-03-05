@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function Hero() {
@@ -26,50 +25,42 @@ export default function Hero() {
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-8"
+        <div
+          className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-8 animate-hero-fade-in"
+          style={{ animationDelay: "0s" }}
         >
           <Sparkles className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
           <span className="text-xs font-medium text-text-secondary">
             Free AI-Powered Resume Optimizer
           </span>
-        </motion.div>
+        </div>
 
         {/* Main heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6"
+        <h1
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight mb-6 text-white animate-hero-fade-in"
+          style={{ animationDelay: "0.1s" }}
         >
           Don&apos;t just scan your resume
           <br />
           <span className="text-gradient">&mdash; let AI rewrite it</span>
           <br />
           for the job.
-        </motion.h1>
+        </h1>
 
         {/* Subheading */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed"
+        <p
+          className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed animate-hero-fade-in"
+          style={{ animationDelay: "0.2s" }}
         >
           Paste your resume and a job description. Our AI analyzes keyword gaps,
           rewrites bullet points, and delivers an ATS-optimized resume in
           seconds.
-        </motion.p>
+        </p>
 
         {/* CTA buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        <div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-hero-fade-in"
+          style={{ animationDelay: "0.3s" }}
         >
           <Link
             href="/app"
@@ -84,18 +75,16 @@ export default function Hero() {
           >
             See how it works
           </a>
-        </motion.div>
+        </div>
 
         {/* Social proof line */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 text-xs text-text-tertiary"
+        <p
+          className="mt-12 text-xs text-text-tertiary animate-hero-fade-in"
+          style={{ animationDelay: "0.5s" }}
         >
           No signup required &middot; 3 free tailors per day &middot; Your data
           is never stored
-        </motion.p>
+        </p>
       </div>
     </section>
   );
