@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   AlertCircle,
   RotateCcw,
@@ -123,17 +123,10 @@ export default function AppPage() {
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            {/* Left Column — Inputs */}
-            <AnimatePresence mode="wait">
+            {/* Left Column — Inputs or Collapsed Summary */}
+            <div className="space-y-4">
               {(isInput || isLoading || isError) && (
-                <motion.div
-                  key="inputs"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-4"
-                >
+                <>
                   <GlassCard hover={false} padding="p-5">
                     <ResumeInput
                       value={resume}
@@ -168,52 +161,38 @@ export default function AppPage() {
                   />
 
                   {/* Error State */}
-                  <AnimatePresence>
-                    {isError && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                      >
-                        <GlassCard hover={false} padding="p-4">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-danger/10 flex items-center justify-center">
-                              <AlertCircle className="w-4 h-4 text-danger" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-text-primary mb-1">
-                                Something went wrong
-                              </p>
-                              <p className="text-xs text-text-secondary">
-                                {state.message}
-                              </p>
-                              {state.retryable && (
-                                <button
-                                  onClick={handleSubmit}
-                                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent-primary hover:text-accent-secondary transition-colors"
-                                >
-                                  <RotateCcw className="w-3 h-3" />
-                                  Try again
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        </GlassCard>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+                  {isError && (
+                    <GlassCard hover={false} padding="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-danger/10 flex items-center justify-center">
+                          <AlertCircle className="w-4 h-4 text-danger" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-text-primary mb-1">
+                            Something went wrong
+                          </p>
+                          <p className="text-xs text-text-secondary">
+                            {state.message}
+                          </p>
+                          {state.retryable && (
+                            <button
+                              onClick={handleSubmit}
+                              className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent-primary hover:text-accent-secondary transition-colors"
+                            >
+                              <RotateCcw className="w-3 h-3" />
+                              Try again
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </GlassCard>
+                  )}
+                </>
               )}
 
               {/* Collapsed input panel when showing results */}
               {isResults && (
-                <motion.div
-                  key="collapsed-inputs"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-4"
-                >
+                <>
                   <GlassCard hover={false} padding="p-5">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
@@ -261,169 +240,102 @@ export default function AppPage() {
                       className="w-full justify-center rounded-xl py-3 bg-[var(--bg-tertiary)] border border-[var(--glass-border)] text-text-primary hover:bg-[var(--bg-tertiary)]/80"
                     />
                   </div>
-                </motion.div>
+                </>
               )}
-            </AnimatePresence>
+            </div>
 
             {/* Right Column — Results */}
             <div className="min-h-[400px]">
-              <AnimatePresence mode="wait">
-                {/* Empty state */}
-                {isInput && (
-                  <motion.div
-                    key="empty"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <GlassCard hover={false} className="h-full min-h-[400px]">
-                      <EmptyState />
-                    </GlassCard>
-                  </motion.div>
-                )}
+              {/* Empty state */}
+              {isInput && (
+                <GlassCard hover={false} className="h-full min-h-[400px]">
+                  <EmptyState />
+                </GlassCard>
+              )}
 
-                {/* Loading state */}
-                {isLoading && (
-                  <motion.div
-                    key="loading"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <GlassCard
-                      hover={false}
-                      className="h-full min-h-[400px] flex items-center justify-center"
-                    >
-                      <div className="flex flex-col items-center gap-4 py-16">
-                        <LoadingSpinner size="lg" />
-                        <div className="text-center">
-                          <p className="text-sm font-medium text-text-primary">
-                            Analyzing your resume
-                          </p>
-                          <p className="text-xs text-text-secondary mt-1">
-                            This usually takes 15-30 seconds
-                          </p>
-                        </div>
-                        {/* Progress dots */}
-                        <div className="flex gap-1.5 mt-2">
-                          {[0, 1, 2].map((i) => (
-                            <motion.div
-                              key={i}
-                              className="w-2 h-2 rounded-full bg-accent-primary"
-                              animate={{
-                                opacity: [0.3, 1, 0.3],
-                                scale: [0.8, 1.2, 0.8],
-                              }}
-                              transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                delay: i * 0.3,
-                              }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </GlassCard>
-                  </motion.div>
-                )}
+              {/* Loading state */}
+              {isLoading && (
+                <GlassCard
+                  hover={false}
+                  className="h-full min-h-[400px] flex items-center justify-center"
+                >
+                  <div className="flex flex-col items-center gap-4 py-16">
+                    <LoadingSpinner size="lg" />
+                    <div className="text-center">
+                      <p className="text-sm font-medium text-text-primary">
+                        Analyzing your resume
+                      </p>
+                      <p className="text-xs text-text-secondary mt-1">
+                        This usually takes 15-30 seconds
+                      </p>
+                    </div>
+                    {/* Progress dots */}
+                    <div className="flex gap-1.5 mt-2">
+                      {[0, 1, 2].map((i) => (
+                        <motion.div
+                          key={i}
+                          className="w-2 h-2 rounded-full bg-accent-primary"
+                          animate={{
+                            opacity: [0.3, 1, 0.3],
+                            scale: [0.8, 1.2, 0.8],
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            delay: i * 0.3,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </GlassCard>
+              )}
 
-                {/* Error state on results side */}
-                {isError && (
-                  <motion.div
-                    key="error-right"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <GlassCard hover={false} className="h-full min-h-[400px]">
-                      <EmptyState />
-                    </GlassCard>
-                  </motion.div>
-                )}
+              {/* Error state on results side */}
+              {isError && (
+                <GlassCard hover={false} className="h-full min-h-[400px]">
+                  <EmptyState />
+                </GlassCard>
+              )}
 
-                {/* Results */}
-                {isResults && (
-                  <motion.div
-                    key="results"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.3 }}
-                    className="space-y-4"
-                  >
-                    <ResultsTabs
-                      activeTab={activeTab}
-                      onTabChange={setActiveTab}
-                    />
+              {/* Results */}
+              {isResults && (
+                <div className="space-y-4">
+                  <ResultsTabs
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                  />
 
-                    <GlassCard hover={false} padding="p-5">
-                      <AnimatePresence mode="wait">
-                        {activeTab === 'score' && (
-                          <motion.div
-                            key="score"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ScoreGauge
-                              score={state.result.matchScore}
-                              summary={state.result.summary}
-                            />
-                          </motion.div>
-                        )}
+                  <GlassCard hover={false} padding="p-5">
+                    {activeTab === 'score' && (
+                      <ScoreGauge
+                        score={state.result.matchScore}
+                        summary={state.result.summary}
+                      />
+                    )}
 
-                        {activeTab === 'keywords' && (
-                          <motion.div
-                            key="keywords"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <KeywordAnalysis
-                              keywords={state.result.keywords}
-                            />
-                          </motion.div>
-                        )}
+                    {activeTab === 'keywords' && (
+                      <KeywordAnalysis
+                        keywords={state.result.keywords}
+                      />
+                    )}
 
-                        {activeTab === 'tailored' && (
-                          <motion.div
-                            key="tailored"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <TailoredResume
-                              resumeText={state.result.tailoredResume}
-                              changes={state.result.changes}
-                            />
-                          </motion.div>
-                        )}
+                    {activeTab === 'tailored' && (
+                      <TailoredResume
+                        resumeText={state.result.tailoredResume}
+                        changes={state.result.changes}
+                      />
+                    )}
 
-                        {activeTab === 'diff' && (
-                          <motion.div
-                            key="diff"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <DiffViewer
-                              original={state.originalResume}
-                              tailored={state.result.tailoredResume}
-                            />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </GlassCard>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    {activeTab === 'diff' && (
+                      <DiffViewer
+                        original={state.originalResume}
+                        tailored={state.result.tailoredResume}
+                      />
+                    )}
+                  </GlassCard>
+                </div>
+              )}
             </div>
           </div>
         </div>
